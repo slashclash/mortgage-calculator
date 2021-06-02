@@ -1,0 +1,19 @@
+{% load bootstrap4 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block content %}
+
+<div class="container w-25">
+    <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+        <button name="submit" class="btn btn-primary">Create Account</button>
+        <button class="btn"><a href="{% url 'login' %}">Войти</a></button>
+        {% endbuttons %}
+    </form>
+</div>
+
+{% endblock content %}

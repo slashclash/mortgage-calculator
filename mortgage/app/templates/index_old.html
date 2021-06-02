@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{% block content %}
+
+
+<div class="container my-2">
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+               aria-controls="nav-home" aria-selected="true">Главная</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+               aria-controls="nav-profile" aria-selected="false">История</a>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div class="row">
+                <div class="col-sm">
+                    <div class="container">
+                        <form method="post" action="{% url 'index' %}">
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            {% buttons %}
+                            <button name="submit" class="btn btn-primary">Рассчитать</button>
+                            {% endbuttons %}
+                        </form>
+
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card my-2" style="width: 25rem;">
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">Ежемесячный платеж</h6>
+                            <h5 class="card-title">{{ monthly_payment }} ₽</h5>
+                            <h5></h5>
+                            <h6 class="card-subtitle mb-2 text-muted my-2">Сумма кредита</h6>
+                            <h5 class="card-title">{{ credit }} ₽</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">№</th>
+                    <th scope="col">Дата</th>
+                    <th scope="col">Стоимость недвижимости</th>
+                    <th scope="col">Первоначальный взнос</th>
+                    <th scope="col">Срок кредита</th>
+                    <th scope="col">Процентная ставка</th>
+                    <th scope="col">Ежемесячный платеж</th>
+                    <th scope="col">Сумма кредита</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in history %}
+                <tr>
+                    <th scope="row">{{ item.id }}</th>
+                    <td>{{ item.date }}</td>
+                    <td>{{ item.full_price }}</td>
+                    <td>{{ item.initial_payment }}</td>
+                    <td>{{ item.period }}</td>
+                    <td>{{ item.interest_rate }}</td>
+                    <td>{{ item.monthly_payment }}</td>
+                    <td>{{ item.credit }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <th scope="row">{{ item.id }}</th>
+                    <td>Нет данных</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            >
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

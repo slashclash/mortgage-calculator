@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+{% block content %}
+
+
+<div class="container my-2">
+ {% load static %}
+        <script src="{% static 'tabs.js' %}" type="text/javascript"></script>
+    <nav>
+
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+               aria-controls="nav-home" aria-selected="true">Главная</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+               aria-controls="nav-profile" aria-selected="false">История</a>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div class="row">
+                <div class="col-sm">
+                    <div class="container">
+                        <form method="post" action="{% url 'index' %}">
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            {% buttons %}
+                            <button name="submit" class="btn btn-primary">Рассчитать</button>
+                            {% endbuttons %}
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card my-2" style="width: 25rem;">
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">Ежемесячный платеж</h6>
+                            <h5 class="card-title">{{ monthly_payment }} ₽</h5>
+                            <h5></h5>
+                            <h6 class="card-subtitle mb-2 text-muted my-2">Сумма кредита</h6>
+                            <h5 class="card-title">{{ credit }} ₽</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="col-3 text-center" scope="col">Дата</th>
+                    <th class="text-center" scope="col">Стоимость недвижимости</th>
+                    <th class="text-center" scope="col">Первоначальный взнос</th>
+                    <th class="text-center" scope="col">Срок кредита</th>
+                    <th class="text-center" scope="col">Процентная ставка</th>
+                    <th class="text-center" scope="col">Ежемесячный платеж</th>
+                    <th class="text-center" scope="col">Сумма кредита</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in history_items%}
+                <tr>
+                    <td class="text-center">{{ item.date }}</td>
+                    <td class="text-center">{{ item.full_price }}</td>
+                    <td class="text-center">{{ item.initial_payment }}</td>
+                    <td class="text-center">{{ item.period }}</td>
+                    <td class="text-center">{{ item.interest_rate }}</td>
+                    <td class="text-center">{{ item.monthly_payment }}</td>
+                    <td class="text-center">{{ item.credit }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <th scope="row">{{ item.id }}</th>
+                    <td>Нет данных</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation example" class="pagination">
+                {% if history_items.has_previous %}
+                <li class="page-item"><a class="page-link"
+                                         href="?page={{ history_items.previous_page_number }}#nav-profile">&laquo;</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="sr-only">&laquo;</span></li>
+                {% endif %}
+                {% if history_items.has_other_pages %}
+                {% for i in history_items.paginator.page_range %}
+                {% if history_items.number == i %}
+                <li class="page-item active"><span class="page-link">{{ i }} <span
+                        class="sr-only">(current)</span></span></li>
+                {% elif i >= history_items.number|add:-2 and i <= history_items.number|add:2%}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}#nav-profile">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if history_items.has_next %}
+                <li class="page-item"><a class="page-link"
+                                         href="?page={{ history_items.next_page_number }}#nav-profile">&raquo;</a></li>
+                {% else %}
+                <li class="page-item disabled"><span class="sr-only">&raquo;</span></li>
+                {% endif %}
+            </nav>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
