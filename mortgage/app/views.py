@@ -50,9 +50,12 @@ def index(request):
             mortgage.user = request.user
             mortgage.save()
             history_items = get_history(request)
-            print(history_items)
             context = {'form': form, 'credit': credit, 'monthly_payment': monthly_payment,
                        'history_items': history_items}
+            return render(request, 'index.html', context)
+
+        else:
+            context = {'form': form}
             return render(request, 'index.html', context)
 
 
