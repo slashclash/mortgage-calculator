@@ -15,5 +15,3 @@
 
 История запросов:
 (pictures/history_page.jpg)
-
-
