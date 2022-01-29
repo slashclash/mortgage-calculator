@@ -4,14 +4,13 @@
 В приложении реализована регистрация и авторизация пользователя, доступна история расчетов. Данные хранятся в БД PostgreSQL. Для отрисовки форм используется Bootstrap 4.
 
 Страница входа:
-(pictures/login_page.jpg)
+![](pictures/login_page.jpg)
 
 Страница регистрации пользователя:
-(pictures/registration_page.jpg)
-
+![](pictures/registration_page.jpg)
 
 Главная страница:
-(pictures/main_page.jpg)
+![](pictures/main_page.jpg)
 
 История запросов:
-(pictures/history_page.jpg)
+![](pictures/history_page.jpg)
